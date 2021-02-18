@@ -43,14 +43,14 @@ router.post("/", async (req, res) => {
     });
 });
 
-router.post("/delete", (req, res) => {
-  Post.find({ title: req.body.id.replace(/\-/g, " ") }).deleteMany(
-    (err, data) => {
-      if (err) throw err;
-      res.json(data);
-    }
-  );
-  res.json(req.body);
-});
+// router.post("/delete", (req, res) => {
+//   Post.find({ title: req.body.id.replace(/\-/g, " ") }).deleteMany(
+//     (err, data) => {
+//       if (err) throw err;
+//       res.json(data);
+//     }
+//   );
+//   res.json(req.body);
+// });
 
 module.exports = router;

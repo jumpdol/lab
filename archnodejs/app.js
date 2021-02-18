@@ -18,7 +18,7 @@ const config = {
 setInterval(() => {
   checkInternetConnected(config)
     .then(() => {
-      fs.readFile("myjson.json", "utf8", (err, data) => {
+      fs.readFile("myjson.json", "utf8", async (err, data) => {
         let datas = `{
           "requests":[
               
@@ -28,23 +28,27 @@ setInterval(() => {
         if (err) throw err;
         if (jsons.requests.length > 0) {
           fs.writeFile("myjson.json", datas, "utf-8", (err) => {
-            console.log(err);
+            console.log("write");
             if (err) throw err;
           });
-          for (let i = 0; i < jsons.requests.length; i++) {
-            const post = new Post({
-              title: jsons.requests[i].title,
-              description: jsons.requests[i].description,
-            });
-            post.save();
-          }
+          // for (let i = 0; i < jsons.requests.length; i++) {
+          //   console.log(jsons.requests[i].title);
+          // }
+
+          // const post = new Post({
+          //   title: jsons.requests[i].title,
+          //   description: jsons.requests[i].description,
+          // });
+          await Post.insertMany(jsons.requests, (err, result) => {
+            console.log(result);
+          });
         }
       }); //successfully connected to a server
     })
     .catch((ex) => {
       console.log("Offline"); // cannot connect to a server or error occurred.
     });
-}, 5000);
+}, 10000);
 
 app.use(bodyParser.json());
 app.use(cors());
